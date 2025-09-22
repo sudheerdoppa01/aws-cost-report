@@ -1,9 +1,8 @@
-name: Terraform Deploy
+name: Terraform Deploy (Dev)
 
 on:
   push:
     branches:
-      - main
       - dev
 
 permissions:
@@ -15,7 +14,9 @@ env:
 
 jobs:
   terraform:
+    name: Deploy Cost Report Infra (Dev)
     runs-on: ubuntu-latest
+    environment: dev   # ✅ This enables access to environment-scoped secrets
 
     steps:
       - name: Checkout code
