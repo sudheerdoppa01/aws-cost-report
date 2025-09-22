@@ -1,9 +1,10 @@
-name: Terraform Deploy (Prod)
+name: Terraform Deploy
 
 on:
   push:
     branches:
       - main
+      - dev
 
 permissions:
   id-token: write
@@ -14,21 +15,20 @@ env:
 
 jobs:
   terraform:
-    name: Deploy Cost Report Infra (Prod)
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.TERRAFOROM_GITHUB_OIDC_ROLE_PROD }}
+          role-to-assume: ${{ secrets.TERRAFOROM_GITHUB_OIDC_ROLE_DEV }}
           aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
 
-      - name: Setup Terraform CLI
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.13.2
@@ -36,11 +36,8 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Validate
-        run: terraform validate
-
       - name: Terraform Plan
-        run: terraform plan -var="region=${{ env.AWS_REGION }}" -var="environment=prod"
+        run: terraform plan -var="region=${{ env.AWS_REGION }}" -var="environment=dev"
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var="region=${{ env.AWS_REGION }}" -var="environment=prod"
+        run: terraform apply -auto-approve -var="region=${{ env.AWS_REGION }}" -var="environment=dev"
