@@ -1,9 +1,8 @@
 resource "aws_sns_topic" "cost_report_alerts" {
-  name = "cost-report-alerts-prod"
-
+  name = "cost-report-alerts-${var.environment}"
   tags = {
     Name        = "Cost Report Alerts"
-    Environment = "prod"
+    Environment = var.environment
     Owner       = "sudheer"
   }
 }

@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "cost_report_lambda" {
-  function_name = "cost-report-lambda-prod"
+  function_name = "cost-report-lambda-${var.environment}"
   role          = var.lambda_role_arn
   runtime       = "python3.9"
   handler       = "lambda_function.lambda_handler"
@@ -19,7 +19,7 @@ resource "aws_lambda_function" "cost_report_lambda" {
 
   tags = {
     Name        = "Cost Report Lambda"
-    Environment = "prod"
+    Environment = var.environment
     Owner       = "sudheer"
   }
 }

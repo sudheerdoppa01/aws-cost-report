@@ -1,5 +1,5 @@
 resource "aws_athena_database" "cur_db" {
-  name   = "cur_db_prod"
+  name   = "cur_db_${var.environment}"
   bucket = var.bucket_id
 }
 
